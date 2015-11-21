@@ -21,3 +21,7 @@ public:
 	AES_Buffer(AES_Buffer&& rthat);
 	~AES_Buffer();
 };
+
+static inline void randomKey(unsigned char key[]) {
+	RAND_pseudo_bytes(key, sizeof(key));
+}

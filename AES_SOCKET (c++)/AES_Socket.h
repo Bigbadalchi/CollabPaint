@@ -66,5 +66,8 @@ public:
 		return sock != NULL;
 	}
 
+	//This is dancing around the problem but sometimes you just gotta do what you gotta do
+	AES_Socket* HardDeReference();
+
 	~AES_Socket();
 };
