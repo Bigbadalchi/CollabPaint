@@ -16,6 +16,7 @@
 #include <stdio.h>
 
 #include <AES_TCP/AES_Socket.h>
+#include <AES_TCP/AES.h>
 
 #include "CommunicationFlags.h"
 
@@ -24,12 +25,14 @@
 struct Client {
 	AES_Socket* SOCK;
 	std::thread run_thread;
-	Client(AES_Socket* outbound_sock, char KEY[128 / 8]);
+	SOCKADDR_IN remoteADDR;
+	Client(AES_Socket* outbound_sock, const CPaintServer* parent, SOCKADDR_IN remoteADDR);
 	bool _finalized;
 	~Client();
 };
 
 class CPaintServer {
+	friend struct Client;
 	AES_Socket listenSock;
 	std::thread listenThread;
 	std::mutex mu;

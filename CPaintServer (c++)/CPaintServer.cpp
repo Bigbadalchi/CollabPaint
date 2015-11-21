@@ -82,11 +82,10 @@ void CPaintServer::ListenFunction()
 		}
 
 		//use this connection for sending outbound packets and use the inboundADDR to establish an inbound connection
-		std::thread(std::bind(&CPaintServer::handleInboundRequests, this, newConn, remote_addr));
-
 		std::lock_guard<std::mutex> _lg(mu);
 		//We need to register the client
-		clients.push_back(Client(, ))
+		
+		clients.push_back(Client(newConn.HardDeReference(), this, inboundADDR));
 
 	}
 }
@@ -96,6 +95,13 @@ void CPaintServer::handleInboundRequests(SOCKADDR_IN remoteADDR)
 	//This method establishes and handles an inbound connection from a client
 	
 
+
+}
+
+Client::Client(AES_Socket* outbound_sock, const CPaintServer* parent, SOCKADDR_IN remoteADDR)
+{
+	this->remoteADDR = remoteADDR;
+	run_thread = std::thread(std::bind(&CPaintServer::handleInboundRequests, parent, remoteADDR));
 
 }
 
