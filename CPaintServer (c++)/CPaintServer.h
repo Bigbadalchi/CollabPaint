@@ -17,23 +17,31 @@
 
 #include <AES_TCP/AES_Socket.h>
 
+#include "CommunicationFlags.h"
+
 #define CLIENT_CMD_SUBSCRIBE 1
 
-#define KEY "\xFA\xAF\x23\xC0\t+@A_E4g~F`"
+struct Client {
+	AES_Socket* SOCK;
+	std::thread run_thread;
+	Client(AES_Socket* outbound_sock, char KEY[128 / 8]);
+	bool _finalized;
+	~Client();
+};
 
 class CPaintServer {
 	AES_Socket listenSock;
-	const char* passwordHash;
 	std::thread listenThread;
 	std::mutex mu;
-	std::vector<std::pair<AES_Socket*, SOCKADDR_IN>> connections;
 
-	void ListenCallback();
-	void handleInboundRequests(AES_Socket sock, SOCKADDR_IN remoteADDR);
+	std::vector<Client> clients;
+
+	void ListenFunction();
+	void handleInboundRequests(SOCKADDR_IN remoteADDR);
 
 public:
 	CPaintServer(const char* ip, USHORT port,
-		const char* passwordHash = NULL);
+		unsigned char key[128 / 8]);
 };
 
 #endif

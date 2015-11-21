@@ -266,6 +266,26 @@ int AES_Socket::Receive(char* buffer, size_t size, int flags /* = 0 */)
 	return return_bytes;
 }
 
+AES_Socket* AES_Socket::HardDeReference()
+{
+	//This is dancing around the problem but sometimes you just gotta improvise
+	AES_Socket* hard_reference = new AES_Socket();
+	hard_reference->sock = this->sock;
+
+	memcpy_s(hard_reference->KEY, 128 / 8, this->KEY, 128 / 8);
+	memcpy_s(hard_reference->IV, AES_BLOCK_SIZE, this->IV, AES_BLOCK_SIZE);
+	memcpy_s(hard_reference->remoteIV, AES_BLOCK_SIZE, this->remoteIV, AES_BLOCK_SIZE);
+
+	hard_reference->cryptedbuffer = this->cryptedbuffer;
+	this->cryptedbuffer = nullptr;
+
+	hard_reference->sock = this->sock;
+	this->sock = NULL;
+
+	return hard_reference;
+
+}
+
 AES_Socket::~AES_Socket()
 {
 	if (connected) {
