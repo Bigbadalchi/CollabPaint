@@ -191,6 +191,16 @@ int AES_Socket::setSocketOption(int level, int option_name, const char* option_v
 	return setsockopt(sock, level, option_name, option_val, option_length);
 }
 
+int AES_Socket::Shutdown(int param)
+{
+	return shutdown(sock, param);
+}
+
+int AES_Socket::Close()
+{
+	return closesocket(sock);
+}
+
 int AES_Socket::Receive(char* buffer, size_t size, int flags /* = 0 */)
 {
 	int rec = recv(sock, (char*)header, 4, flags);

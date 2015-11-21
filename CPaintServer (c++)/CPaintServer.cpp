@@ -26,7 +26,6 @@ void CPaintServer::ListenCallback()
 		newConn.setTimeOut(2000);
 		int rec = newConn.Receive(ValidationBuffer, 2048, 0);
 		
-
 		//FIX THIS SHIT
 		//std::thread(std::bind(&CPaintServer::handleInboundRequests, this, newConn, remote_addr)).detach();
 

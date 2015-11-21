@@ -58,6 +58,9 @@ public:
 	int Receive(char* buffer, size_t size, int flags = 0);
 	int Send(const char* data, size_t size, int flags = 0);
 	int setSocketOption(int level, int option_name, const char* option_val, int option_length);
+	
+	int Shutdown(int param);
+	int Close();
 
 	operator bool() const {
 		return sock != NULL;
