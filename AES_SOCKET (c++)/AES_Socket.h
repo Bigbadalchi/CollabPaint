@@ -39,12 +39,12 @@ private:
 	unsigned char KEY[128 / 8];
 	AES_Socket();
 	AES_Socket(unsigned char key[128 / 8], SOCKET newConn);
+	AES_Socket(const AES_Socket& that);
 
 public:
 
 	bool Connected() const { return connected; }
 
-	AES_Socket(const AES_Socket& that) = delete;
 	AES_Socket(AES_Socket&& rthat);
 
 	int setTimeOut(DWORD milliseconds);
